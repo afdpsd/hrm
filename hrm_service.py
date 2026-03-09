@@ -79,6 +79,25 @@ class HeartRateMonitor:
 
             except Exception as e:  # noqa: BLE001
                 print(f"Ошибка HRM-сервиса: {e}")
+                # #region agent log
+                try:
+                    import json
+
+                    log_entry = {
+                        "sessionId": "5c9330",
+                        "runId": "run1",
+                        "hypothesisId": "H1",
+                        "location": "hrm_service.py:_main",
+                        "message": "HRM service exception",
+                        "data": {"error": str(e)},
+                        "timestamp": int(time.time() * 1000),
+                    }
+                    with open("debug-5c9330.log", "a", encoding="utf-8") as f:
+                        f.write(json.dumps(log_entry, ensure_ascii=False) + "\n")
+                except Exception:
+                    # не ломаем сервис, если логирование не удалось
+                    pass
+                # #endregion agent log
             finally:
                 self.connected = False
                 await asyncio.sleep(5)
