@@ -105,6 +105,30 @@ class HeartRateMonitor:
     async def _find_device(self):
         print("Поиск пульсометра Garmin HRM-Pro...")
         devices = await BleakScanner.discover()
+
+        # #region agent log
+        try:
+            import json
+
+            simplified = [
+                {"name": d.name, "address": d.address}
+                for d in devices
+            ]
+            log_entry = {
+                "sessionId": "5c9330",
+                "runId": "run1",
+                "hypothesisId": "H2",
+                "location": "hrm_service.py:_find_device",
+                "message": "BLE scan result",
+                "data": {"devices": simplified},
+                "timestamp": int(time.time() * 1000),
+            }
+            with open("debug-5c9330.log", "a", encoding="utf-8") as f:
+                f.write(json.dumps(log_entry, ensure_ascii=False) + "\n")
+        except Exception:
+            pass
+        # #endregion agent log
+
         for d in devices:
             name = (d.name or "").lower()
             if self.device_name_substring.lower() in name or "garmin" in name:
