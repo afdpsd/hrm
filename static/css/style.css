@@ -1,0 +1,146 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #000000;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial,
+    sans-serif;
+  color: #f5f5f5;
+}
+
+.screen {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background: radial-gradient(circle at center, #111 0%, #000 65%, #000 100%);
+}
+
+.screen-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px 0;
+  box-sizing: border-box;
+  font-size: 14px;
+  color: #cccccc;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 8px;
+  background: #444444;
+}
+
+.status-dot--ok {
+  background: #00ff66;
+}
+
+.status-dot--warn {
+  background: #ffaa00;
+}
+
+.status-dot--search {
+  background: #00b7ff;
+}
+
+.status-text {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.screen-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.hr-label {
+  font-size: 18px;
+  letter-spacing: 0.18em;
+  color: #aaaaaa;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.hr-value {
+  font-size: 120px;
+  font-weight: 600;
+  color: #00ff55;
+  line-height: 1;
+  text-shadow: 0 0 12px rgba(0, 255, 85, 0.45);
+}
+
+.hr-unit {
+  font-size: 20px;
+  color: #888888;
+  margin-top: 4px;
+  letter-spacing: 0.22em;
+}
+
+.circle {
+  margin-top: 24px;
+  width: 230px;
+  height: 230px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 24px rgba(0, 0, 0, 0.85);
+}
+
+.circle-inner {
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+  border: 3px solid rgba(0, 255, 120, 0.4);
+  box-shadow: 0 0 24px rgba(0, 255, 120, 0.4);
+}
+
+.screen-footer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 0 20px;
+}
+
+.btn-shutdown {
+  font-size: 20px;
+  padding: 10px 28px;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #b00020, #ff1744);
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  cursor: pointer;
+  box-shadow: 0 0 18px rgba(255, 23, 68, 0.55);
+}
+
+.btn-shutdown:active {
+  transform: scale(0.97);
+  box-shadow: 0 0 10px rgba(255, 23, 68, 0.4);
+}
+
+@media (max-width: 480px) {
+  .hr-value {
+    font-size: 80px;
+  }
+
+  .circle {
+    width: 190px;
+    height: 190px;
+  }
+}
+

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Garmin HRM-Pro · Пульс</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  </head>
+  <body>
+    <div class="screen">
+      <div class="screen-header">
+        <div class="status-dot" id="status-dot"></div>
+        <div class="status-text" id="status-text">Поиск датчика…</div>
+      </div>
+
+      <div class="screen-center">
+        <div class="hr-label">ПУЛЬС</div>
+        <div class="hr-value" id="hr-value">--</div>
+        <div class="hr-unit">BPM</div>
+
+        <div class="circle">
+          <div class="circle-inner"></div>
+        </div>
+      </div>
+
+      <div class="screen-footer">
+        <button class="btn-shutdown" onclick="shutdownPi()">Выключить Pi</button>
+      </div>
+    </div>
+
+    <script>
+      async function fetchHeartRate() {
+        try {
+          const res = await fetch("/api/heart_rate");
+          const data = await res.json();
+
+          const hr = data.hr || 0;
+          const status = data.status || "searching";
+
+          const hrEl = document.getElementById("hr-value");
+          const dotEl = document.getElementById("status-dot");
+          const statusTextEl = document.getElementById("status-text");
+
+          if (hr > 0) {
+            hrEl.textContent = hr;
+          } else {
+            hrEl.textContent = "--";
+          }
+
+          if (status === "connected") {
+            dotEl.className = "status-dot status-dot--ok";
+            statusTextEl.textContent = "Подключено к HRM-Pro";
+          } else if (status === "disconnected") {
+            dotEl.className = "status-dot status-dot--warn";
+            statusTextEl.textContent = "Нет сигнала · наденьте ремень";
+          } else {
+            dotEl.className = "status-dot status-dot--search";
+            statusTextEl.textContent = "Поиск HRM-Pro…";
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      async function shutdownPi() {
+        if (!confirm("Вы действительно хотите выключить Raspberry Pi?")) {
+          return;
+        }
+        try {
+          await fetch("/api/shutdown", { method: "POST" });
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      setInterval(fetchHeartRate, 1000);
+      fetchHeartRate();
+    </script>
+  </body>
+</html>
+

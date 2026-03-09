@@ -1,0 +1,15 @@
+[Unit]
+Description=Garmin HRM-Pro Web App
+After=network.target bluetooth.service
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/firstapp
+ExecStart=/home/pi/firstapp/venv/bin/python /home/pi/firstapp/app.py
+Restart=always
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target
+
