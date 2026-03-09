@@ -16,8 +16,13 @@ class HeartRateMonitor:
     Запускается в отдельном потоке и пытается переподключаться при обрыве.
     """
 
-    def __init__(self, device_name_substring: str = "HRM-Pro"):
+    def __init__(
+        self,
+        device_name_substring: str = "HRM-Pro",
+        device_address: Optional[str] = None,
+    ):
         self.device_name_substring = device_name_substring
+        self.device_address = device_address
         self.current_hr: int = 0
         self.connected: bool = False
         self.last_update_ts: float = 0.0
@@ -54,7 +59,7 @@ class HeartRateMonitor:
                     continue
 
                 print(f"Подключение к устройству: {device.name} ({device.address})")
-                async with BleakClient(device) as client:
+                async with BleakClient(device.address) as client:
                     self.connected = True
                     print("Подключение установлено")
 
@@ -104,6 +109,16 @@ class HeartRateMonitor:
 
     async def _find_device(self):
         print("Поиск пульсометра Garmin HRM-Pro...")
+
+        # Если задан конкретный MAC-адрес — пытаемся найти именно его
+        if self.device_address:
+            devices = await BleakScanner.discover()
+            for d in devices:
+                if d.address.upper() == self.device_address.upper():
+                    print(f"Найдено устройство по адресу: {d}")
+                    return d
+            print("Устройство с заданным MAC-адресом не найдено, продолжаем общий поиск...")
+
         devices = await BleakScanner.discover()
 
         # #region agent log

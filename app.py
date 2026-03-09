@@ -14,7 +14,10 @@ app = Flask(
     static_folder=str(BASE_DIR / "static"),
 )
 
-hrm = HeartRateMonitor(device_name_substring="HRM-Pro Plus")
+hrm = HeartRateMonitor(
+    device_name_substring="HRM-Pro Plus",
+    device_address="FB:6F:43:CE:9A:6A",
+)
 hrm.start()
 
 
