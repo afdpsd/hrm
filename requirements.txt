@@ -1,3 +1,4 @@
 flask==3.0.3
-bleak
+# Для совместимости с Python < 3.8 (Raspberry Pi OS 32-bit)
+bleak<0.21
 
